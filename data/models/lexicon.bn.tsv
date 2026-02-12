@@ -1,0 +1,13 @@
+# src_word<TAB>tgt_word<TAB>probability
+hello	নমস্কার	0.95
+world	বিশ্ব	0.95
+good	শুভ	0.80
+morning	সকাল	0.83
+how	কেমন	0.85
+are	আছেন	0.78
+you	আপনি	0.90
+i	আমি	0.98
+am	আছি	0.88
+fine	ভালো	0.81
+thank	ধন্যবাদ	0.76
+you	ধন্যবাদ	0.42

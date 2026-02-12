@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block content %}
+<form method="post" action="{{ url_for('translate') }}" class="card form">
+  <label for="source_text">Source sentence</label>
+  <textarea id="source_text" name="source_text" rows="4" placeholder="Type sentence in source language...">{{ source_text }}</textarea>
+  <label for="target_language">Target language</label>
+  <select id="target_language" name="target_language">
+    {% for lang in target_languages %}
+    <option value="{{ lang.code }}" {% if selected_target_language == lang.code %}selected{% endif %}>{{ lang.label }}</option>
+    {% endfor %}
+  </select>
+  <button type="submit">Translate + Align</button>
+</form>
+
+{% if error %}
+<section class="card error">{{ error }}</section>
+{% endif %}
+
+{% if result %}
+<section class="card">
+  <h2>Translation</h2>
+  <p><strong>Target:</strong> {{ result.target_text }}</p>
+  <p><strong>Target language:</strong> {{ selected_target_language_label }}</p>
+  <p><strong>Backend:</strong> {{ result.backend }}</p>
+  <form method="post" action="{{ url_for('download_translation') }}" class="download-form">
+    <input type="hidden" name="translated_text" value="{{ result.target_text }}">
+    <input type="hidden" name="target_language" value="{{ selected_target_language }}">
+    <button type="submit">Download Translation</button>
+  </form>
+</section>
+
+<section class="card">
+  <div class="toggle-row">
+    <h2>Word-Level Alignments</h2>
+    <label class="toggle">
+      <input id="align-toggle" type="checkbox" checked>
+      <span>Show alignments</span>
+    </label>
+  </div>
+  <div id="alignments-panel">
+    <p><strong>Alignment (GIZA format):</strong> <code>{{ result.giza_alignment }}</code></p>
+    <h3>Source -> Target Pairs</h3>
+    <div class="matrix-wrap">
+      <table class="matrix pair-table">
+        <thead>
+          <tr>
+            <th>Source word</th>
+            <th>Target word</th>
+            <th>Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pair in result.alignment_pairs %}
+          <tr>
+            <td>{{ pair.source_word }}</td>
+            <td>{{ pair.target_word }}</td>
+            <td><code>{{ pair.source_index }}-{{ pair.target_index }}</code></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="card" id="alignment-matrix-panel">
+  <h2>Word-Level Alignment Matrix</h2>
+  <div class="matrix-wrap">
+    <table class="matrix">
+      <thead>
+        <tr>
+          <th>src \ tgt</th>
+          {% for tok in result.target_tokens %}
+          <th>{{ tok }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for src_i in range(result.source_tokens|length) %}
+        <tr>
+          <th>{{ result.source_tokens[src_i] }}</th>
+          {% for tgt_i in range(result.target_tokens|length) %}
+          <td class="{% if result.alignment_grid[src_i][tgt_i] %}on{% else %}off{% endif %}"></td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+<script>
+  (function () {
+    const toggle = document.getElementById("align-toggle");
+    const panel = document.getElementById("alignments-panel");
+    const matrixPanel = document.getElementById("alignment-matrix-panel");
+    if (!toggle || !panel || !matrixPanel) return;
+    toggle.addEventListener("change", function () {
+      const visible = toggle.checked;
+      panel.style.display = visible ? "block" : "none";
+      matrixPanel.style.display = visible ? "block" : "none";
+    });
+  })();
+</script>
+{% endif %}
+{% endblock %}
+

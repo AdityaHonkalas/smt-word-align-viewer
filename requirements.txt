@@ -1,0 +1,15 @@
+Flask==3.1.0
+Jinja2==3.1.5
+numpy==2.2.2
+pandas==2.2.3
+scikit-learn==1.6.1
+nltk==3.9.1
+spacy==3.8.4
+sacremoses==0.1.1
+sentencepiece==0.2.0
+subword-nmt==0.3.8
+python-Levenshtein==0.26.1
+tqdm==4.67.1
+datasets==3.2.0
+deep-translator==1.11.4
+polyglot==16.7.4

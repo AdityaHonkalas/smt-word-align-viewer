@@ -1,0 +1,18 @@
+﻿# src_word<TAB>tgt_word<TAB>probability
+hello	नमस्कार	0.95
+hi	नमस्कार	0.95
+there	तिथे	0.90
+welcome	स्वागत	0.95
+india	भारत	0.97
+to	मध्ये	0.52
+world	जग	0.95
+good	शुभ	0.70
+morning	प्रभात	0.84
+how	कसा	0.86
+are	आहेस	0.78
+you	तू	0.88
+i	मी	0.98
+am	आहे	0.84
+fine	ठीक	0.82
+thank	धन्यवाद	0.90
+you	धन्यवाद	0.40

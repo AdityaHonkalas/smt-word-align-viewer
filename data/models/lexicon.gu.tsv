@@ -1,0 +1,13 @@
+# src_word<TAB>tgt_word<TAB>probability
+hello	નમસ્તે	0.95
+world	દુનિયા	0.96
+good	શુભ	0.72
+morning	સવાર	0.84
+how	કેમ	0.87
+are	છો	0.80
+you	તમે	0.90
+i	હું	0.98
+am	છું	0.85
+fine	સારું	0.83
+thank	આભાર	0.92
+you	આભાર	0.41

@@ -1,0 +1,119 @@
+:root {
+  --bg: #f7f5ef;
+  --panel: #fffdf7;
+  --ink: #1f2933;
+  --accent: #af3b2d;
+  --ok: #1c7c54;
+  --muted: #c6c6bf;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  color: var(--ink);
+  background: radial-gradient(circle at top right, #efe8d8, var(--bg));
+}
+
+.container {
+  width: min(1024px, 92vw);
+  margin: 2rem auto;
+}
+
+h1 {
+  margin: 0 0 1rem;
+  letter-spacing: 0.02em;
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid #d7d2c8;
+  border-radius: 10px;
+  padding: 1rem;
+  margin: 0.9rem 0;
+}
+
+.form textarea {
+  width: 100%;
+  margin: 0.5rem 0 0.75rem;
+  border: 1px solid #b5b0a6;
+  border-radius: 8px;
+  padding: 0.7rem;
+  font-size: 1rem;
+}
+
+.form select {
+  width: 100%;
+  margin: 0.5rem 0 0.75rem;
+  border: 1px solid #b5b0a6;
+  border-radius: 8px;
+  padding: 0.65rem;
+  font-size: 1rem;
+  background: #fff;
+}
+
+button {
+  border: 0;
+  border-radius: 8px;
+  background: var(--accent);
+  color: white;
+  padding: 0.65rem 1rem;
+  cursor: pointer;
+}
+
+.error {
+  border-color: #d98a8a;
+  color: #6e1515;
+}
+
+.matrix-wrap {
+  overflow-x: auto;
+}
+
+.matrix {
+  border-collapse: collapse;
+  min-width: 420px;
+}
+
+.matrix th,
+.matrix td {
+  border: 1px solid #d3cec1;
+  text-align: center;
+  padding: 0.45rem;
+  min-width: 48px;
+  height: 32px;
+}
+
+.matrix td.on {
+  background: color-mix(in srgb, var(--ok) 70%, white);
+}
+
+.matrix td.off {
+  background: color-mix(in srgb, var(--muted) 20%, white);
+}
+
+.download-form {
+  margin-top: 0.75rem;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.95rem;
+}
+
+.pair-table td,
+.pair-table th {
+  min-width: 110px;
+}
