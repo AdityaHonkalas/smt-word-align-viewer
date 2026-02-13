@@ -1,7 +1,0 @@
-# fast_align input format:
-# source sentence ||| target sentence
-hello world ||| नमस्ते दुनिया
-good morning ||| सुप्रभात
-how are you ||| आप कैसे हैं
-i am fine ||| मैं ठीक हूँ
-thank you ||| धन्यवाद

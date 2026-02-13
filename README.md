@@ -24,9 +24,9 @@ Flask app for sentence translation and word-level alignment visualization.
                  |                                                              |
                  v                                                              v
   +-------------------------------+                             +-------------------------------+
-  | Python translation libraries  |                             | Optional SMT toolkits         |
-  | Polyglot / deep-translator    |                             | Moses / FastAlign / GIZA++    |
-  | sentence-level translation    |                             | for external training         |
+  | Python translation library    |                             | Optional SMT toolkits         |
+  | deep-translator              |                             | Moses / FastAlign / GIZA++    |
+  | (GoogleTranslator backend)   |                             | for external training         |
   +-------------------------------+                             +-------------------------------+
 ```
 
@@ -40,7 +40,7 @@ Flask app for sentence translation and word-level alignment visualization.
   - Handles web requests and invokes SMT translation service.
 - SMT core layer:
   - `smt/engine.py`: sentence-level translation orchestration and alignment payload generation.
-  - `smt/library_translate.py`: Polyglot-first translation backend with Python-library fallback.
+  - `smt/library_translate.py`: GoogleTranslator-based runtime translation backend.
   - `smt/tokenize.py`: tokenization and detokenization utilities.
   - `smt/alignment.py`: heuristic/positional word alignment and matrix generation.
   - `smt/config.py`: runtime configuration from environment variables.
@@ -50,9 +50,7 @@ Flask app for sentence translation and word-level alignment visualization.
 
 1. User enters a source sentence in the Flask UI.
 2. `POST /translate` sends text to `SMTTranslator`.
-3. `SMTTranslator` performs sentence-level translation using Python library backends:
-   - Polyglot first
-   - deep-translator fallback
+3. `SMTTranslator` performs sentence-level translation using `deep-translator` (`GoogleTranslator`).
 4. Word alignment is computed heuristically for visualization.
 5. The app returns:
    - translated full sentence in target language,
@@ -90,5 +88,5 @@ Open `http://127.0.0.1:5000/`.
 ## Toolkit integration
 
 The app now uses Python translation libraries for runtime sentence translation.
-If Polyglot is unavailable in your environment, it automatically falls back to `deep-translator`.
+Runtime translation uses `deep-translator` via `GoogleTranslator`.
 SMT toolkit scripts are still available if you want to train/export alignments externally.
