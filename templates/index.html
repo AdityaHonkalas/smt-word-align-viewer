@@ -22,6 +22,8 @@
   <p><strong>Target:</strong> {{ result.target_text }}</p>
   <p><strong>Target language:</strong> {{ selected_target_language_label }}</p>
   <p><strong>Backend:</strong> {{ result.backend }}</p>
+  <p><strong>Alignment model:</strong> {{ result.alignment_model }}</p>
+  <p><strong>Phrase-based projection:</strong> {{ result.phrase_based_translation }}</p>
   <form method="post" action="{{ url_for('download_translation') }}" class="download-form">
     <input type="hidden" name="translated_text" value="{{ result.target_text }}">
     <input type="hidden" name="target_language" value="{{ selected_target_language }}">
@@ -50,6 +52,11 @@
           </tr>
         </thead>
         <tbody>
+          {% if result.alignment_pairs|length == 0 %}
+          <tr>
+            <td colspan="3">No token alignments found.</td>
+          </tr>
+          {% endif %}
           {% for pair in result.alignment_pairs %}
           <tr>
             <td>{{ pair.source_word }}</td>
@@ -60,6 +67,35 @@
         </tbody>
       </table>
     </div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Learned Phrase Pairs</h2>
+  <div class="matrix-wrap">
+    <table class="matrix pair-table">
+      <thead>
+        <tr>
+          <th>Source phrase</th>
+          <th>Target phrase</th>
+          <th>Span</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if result.phrase_pairs|length == 0 %}
+        <tr>
+          <td colspan="3">No consistent phrase pairs extracted.</td>
+        </tr>
+        {% endif %}
+        {% for p in result.phrase_pairs %}
+        <tr>
+          <td>{{ p.source_phrase }}</td>
+          <td>{{ p.target_phrase }}</td>
+          <td><code>{{ p.source_span }} -> {{ p.target_span }}</code></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 </section>
 

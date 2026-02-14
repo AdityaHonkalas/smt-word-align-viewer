@@ -41,8 +41,8 @@ Flask app for sentence translation and word-level alignment visualization.
 - SMT core layer:
   - `smt/engine.py`: sentence-level translation orchestration and alignment payload generation.
   - `smt/library_translate.py`: GoogleTranslator-based runtime translation backend.
-  - `smt/tokenize.py`: tokenization and detokenization utilities.
-  - `smt/alignment.py`: heuristic/positional word alignment and matrix generation.
+  - `smt/tokenize.py`: preprocessing, tokenization, lowercasing, and punctuation utilities.
+  - `smt/alignment.py`: EM-based word alignment, phrase extraction, and matrix generation.
   - `smt/config.py`: runtime configuration from environment variables.
   - `smt/toolkit.py`: subprocess wrappers for Moses/FastAlign/atools (optional).
 
@@ -51,11 +51,14 @@ Flask app for sentence translation and word-level alignment visualization.
 1. User enters a source sentence in the Flask UI.
 2. `POST /translate` sends text to `SMTTranslator`.
 3. `SMTTranslator` performs sentence-level translation using `deep-translator` (`GoogleTranslator`).
-4. Word alignment is computed heuristically for visualization.
-5. The app returns:
+4. Source and target are preprocessed (tokenization, lowercasing, punctuation-aware handling).
+5. Word alignment is computed with an EM-based IBM-style model plus punctuation constraints.
+6. Phrase pairs are extracted from the learned alignment and used to build a phrase-based projection.
+7. The app returns:
    - translated full sentence in target language,
    - backend identifier,
    - GIZA-format alignment pairs,
+   - phrase-based projection and phrase pairs,
    - alignment matrix for visualization.
 
 ### Deployment notes

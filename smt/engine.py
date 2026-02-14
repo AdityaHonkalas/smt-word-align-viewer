@@ -3,10 +3,16 @@ from __future__ import annotations
 from dataclasses import asdict
 from typing import List
 
-from .alignment import TranslationResult, matrix_for_viewer, positional_align
+from .alignment import (
+    TranslationResult,
+    em_word_align,
+    extract_phrase_pairs,
+    matrix_for_viewer,
+    phrase_based_projection,
+)
 from .config import AppConfig
 from .library_translate import LibrarySentenceTranslator
-from .tokenize import tokenize
+from .tokenize import preprocess_for_alignment
 
 
 class SMTTranslator:
@@ -20,10 +26,10 @@ class SMTTranslator:
         if self.supported_languages and lang not in self.supported_languages:
             raise ValueError(f"Unsupported target language: {lang}")
 
-        source_tokens = tokenize(source_text)
+        source_tokens = preprocess_for_alignment(source_text, lowercase=True)
         translated_sentence = self.library_translator.translate(source_text, lang)
-        target_tokens: List[str] = tokenize(translated_sentence)
-        alignments = positional_align(source_tokens, target_tokens)
+        target_tokens: List[str] = preprocess_for_alignment(translated_sentence, lowercase=True)
+        alignments = em_word_align(source_tokens, target_tokens)
 
         result = TranslationResult(
             source_tokens=source_tokens,
@@ -50,5 +56,19 @@ class SMTTranslator:
             if p.src_index < len(result.source_tokens) and p.tgt_index < len(result.target_tokens)
         ]
         payload["target_language"] = lang
-        payload["giza_alignment"] = " ".join(f"{p.src_index}-{p.tgt_index}" for p in result.alignments)
+        payload["giza_alignment"] = " ".join(
+            f"{p.src_index}-{p.tgt_index}" for p in sorted(result.alignments, key=lambda x: (x.src_index, x.tgt_index))
+        )
+        payload["alignment_model"] = "EM-based (IBM-style) with punctuation-aware constraints"
+        payload["phrase_pairs"] = extract_phrase_pairs(
+            result.source_tokens,
+            result.target_tokens,
+            result.alignments,
+        )
+        payload["phrase_based_translation"] = phrase_based_projection(
+            result.source_tokens,
+            result.target_tokens,
+            result.alignments,
+            payload["phrase_pairs"],
+        )
         return payload

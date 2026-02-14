@@ -4,10 +4,22 @@ import re
 from typing import List
 
 _TOKEN_RE = re.compile(r"\w+|[^\w\s]", re.UNICODE)
+_PUNCT_RE = re.compile(r"^[^\w\s]+$", re.UNICODE)
 
 
 def tokenize(text: str) -> List[str]:
     return _TOKEN_RE.findall(text.strip())
+
+
+def preprocess_for_alignment(text: str, lowercase: bool = True) -> List[str]:
+    normalized = " ".join(text.strip().split())
+    if lowercase:
+        normalized = normalized.lower()
+    return tokenize(normalized)
+
+
+def is_punctuation(token: str) -> bool:
+    return bool(_PUNCT_RE.match(token))
 
 
 def detokenize(tokens: List[str]) -> str:
