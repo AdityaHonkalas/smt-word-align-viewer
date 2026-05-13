@@ -11,3 +11,4 @@ subword-nmt==0.3.8
 python-Levenshtein==0.26.1
 tqdm==4.67.1
 deep-translator==1.11.4
+deep-learn==2.1.0
